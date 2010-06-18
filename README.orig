@@ -1,0 +1,123 @@
+= Stanford Natural Language Parser Wrapper
+
+This module is a wrapper for the {Stanford Natural Language Parser}[http://nlp.stanford.edu/downloads/lex-parser.shtml].
+
+The Stanford Natural Language Parser is a Java implementation of a probabilistic PCFG and dependency parser for English, German, Chinese, and Arabic.  This module provides a thin wrapper around the Java code to make it accessible from Ruby along with pure Ruby objects that enable standoff parsing.
+
+
+= Installation and Configuration
+
+In addition to the Ruby gems it requires, to run this module you must manually install the {Stanford Natural Language Parser}[http://nlp.stanford.edu/downloads/lex-parser.shtml].
+
+This module expects the parser to be installed in the <tt>/usr/local/stanford-parser/current</tt> directory on UNIX platforms and in the <tt>C:\stanford-parser\current</tt> directory on Windows platforms.  This is the directory that contains the <tt>stanford-parser.jar</tt> file.  When the module is loaded, it adds this directory to the Java classpath and launches the Java VM with the arguments <tt>-server -Xmx150m</tt>.
+
+These defaults can be overridden by creating the configuration file <tt>/etc/ruby_stanford_parser.yaml</tt> on UNIX platforms and <tt>C:\stanford-parser\ruby-stanford-parser.yaml</tt> on Windows platforms.  This file is in the Ruby YAML[http://ruby-doc.org/stdlib/libdoc/yaml/rdoc/index.html] format, and may contain two values: <tt>root</tt> and <tt>jvmargs</tt>. For example, the file might look like the following:
+
+	root: /usr/local/stanford-parser/other/location
+	jvmargs: -Xmx100m -verbose
+
+
+=Tokenization and Parsing
+
+Use the StanfordParser::DocumentPreprocessor class to tokenize text and files into sentences and words.
+
+	>> require "stanfordparser"
+	=> true
+	>> preproc = StanfordParser::DocumentPreprocessor.new
+	=> <DocumentPreprocessor>
+	>> puts preproc.getSentencesFromString("This is a sentence.  So is this.")
+	This is a sentence .
+	So is this .
+
+Use the StanfordParser::LexicalizedParser class to parse sentences.
+
+	>> parser = StanfordParser::LexicalizedParser.new
+	Loading parser from serialized file /usr/local/stanford-parser/current/englishPCFG.ser.gz ... done [5.5 sec].
+	=> edu.stanford.nlp.parser.lexparser.LexicalizedParser
+	>> puts parser.apply("This is a sentence.")
+	(ROOT
+	  (S [24.917]
+	    (NP [6.139] (DT [2.300] This))
+	    (VP [17.636] (VBZ [0.144] is)
+	      (NP [12.299] (DT [1.419] a) (NN [8.897] sentence)))
+	    (. [0.002] .)))
+
+For complete details about the use of these classes, see the documentation on the Stanford Natural Language Parser website.
+
+
+=Standoff Tokenization and Parsing
+
+This module also contains support for standoff tokenization and parsing, in which the terminal nodes of parse trees contain information about the text that was used to generate them.
+
+Use StanfordParser::StandoffDocumentPreprocessor class to tokenize text and files into sentences and words.
+
+	>> preproc = StanfordParser::StandoffDocumentPreprocessor.new
+	=> <StandoffDocumentPreprocessor>
+	>> s = preproc.getSentencesFromString("This is a sentence.  So is this.")
+	=> [This is a sentence., So is this.]
+
+The standoff preprocessor returns StanfordParser::StandoffToken objects, which contain character offsets into the original text along with information about spacing characters that came before and after the token.
+
+ 	>> puts s
+	This [0,4]
+	is [5,7]
+	a [8,9]
+	sentence [10,18]
+	. [18,19]
+	So [21,23]
+	is [24,26]
+	this [27,31]
+	. [31,32]
+	>> "This is a sentence.  So is this."[27..31]
+	=> "this."
+
+This is the same information contained in the <tt>edu.stanford.nlp.ling.FeatureLabel</tt> class in the Stanford Parser Java implementation.  
+
+Similarly, use the StanfordParser::StandoffParsedText object to parse a block of text into StanfordParser::StandoffNode parse trees whose terminal nodes are StanfordParser::StandoffToken objects.
+
+	>> t = StanfordParser::StandoffParsedText.new("This is a sentence.  So is this.")
+	Loading parser from serialized file /usr/local/stanford-parser/current/englishPCFG.ser.gz ... done [4.9 sec].
+	=> <StanfordParser::StandoffParsedText, 2 sentences>
+	>> puts t.first
+	(ROOT
+	  (S
+	    (NP (DT This [0,4]))
+	    (VP (VBZ is [5,7])
+	      (NP (DT a [8,9]) (NN sentence [10,18])))
+	    (. . [18,19])))
+
+Standoff parse trees can reproduce the text from which they were generated verbatim.
+
+	>> t.first.to_original_string
+	=> "This is a sentence.  "
+
+They can also reproduce the original text with brackets inserted around the yields of specified parse nodes.
+
+	>> t.first.to_bracketed_string([[0,0,0], [0,1,1]])
+	=> "[This] is [a sentence].  "
+
+The format of the coordinates used to specify individual nodes is described in the documentation for the Ruby Treebank[http://rubyforge.org/projects/treebank/] gem.
+
+See the documentation of the individual classes in this module for more details.
+
+Unlike their parents StanfordParser::DocumentPreprocessor and StanfordParser::LexicalizedParser, which produce Ruby wrappers around Java objects, StanfordParser::StandoffDocumentPreprocessor and StanfordParser::StandoffParsedText produce pure Ruby objects.  This is to facilitate serialization of these objects using tools like the Marshal module, which cannot serialize Java objects.
+
+= History
+
+1.0.0:: Initial release
+1.1.0:: Make module initialization function private.  Add example code.
+1.2.0:: Read Java VM arguments from the configuration file.  Add Word class.
+2.0.0:: Add support for standoff parsing.  Change the way Rjb::JavaObjectWrapper wraps returned values: see wrap_java_object for details.  Rjb::JavaObjectWrapper supports static members.  Minor changes to stanford-sentence-parser script.
+2.1.0:: Different default paths for Windows machines; Minor changes to StandoffToken definition
+2.2.0:: Add parent information to StandoffNode
+
+= Copyright
+
+Copyright 2007-2008, William Patrick McNeill
+
+This program is distributed under the GNU General Public License.
+
+
+= Author
+
+W.P. McNeill mailto:billmcn@gmail.com
