@@ -1,0 +1,28 @@
+= stanfordparser
+
+This is an upload/extension of Bill McNeal's stanfordparser rubyforge gem, check it out at its homepage (seems to be partially in French)
+
+http://rubyforge.org/projects/stanfordparser/
+
+or its rdocs
+
+http://stanfordparser.rubyforge.org/
+
+I've been having issues trying to use this gem so I decided to upload it to github and try to organize it to be a little more gem-friendly, especially using jeweler.
+
+AFAIK there aren't other copies of this on github, please correct me if I'm mistaken. The only similar one I can see is http://github.com/tiendung/ruby-nlp which has much less code and I can only assume to be something else.
+
+See README.orig for Bill's readme, which includes dependencies, installation, and usage.
+
+== Note on Patches/Pull Requests
+ 
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it. I would prefer rSpec, but TestUnit is acceptable as well since there are some of those from the original author.
+* Commit.
+* Send me a pull request. Bonus points for topic branches.
+
+== Copyright
+
+Copyright (c) 2010 John Wilkinson. See LICENSE for details.
+Copyright 2007-2008, William Patrick McNeill. See README.orig for details.
