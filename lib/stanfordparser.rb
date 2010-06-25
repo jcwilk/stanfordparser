@@ -1,21 +1,4 @@
-# Copyright 2007-2008 William Patrick McNeill
-#
-# This file is part of the Stanford Parser Ruby Wrapper.
-#
-# The Stanford Parser Ruby Wrapper is free software; you can redistribute it
-# and/or modify it under the terms of the GNU General Public License as
-# published by the Free Software Foundation; either version 2 of the License,
-# or (at your option) any later version.
-#
-# The Stanford Parser Ruby Wrapper is distributed in the hope that it will be
-# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-# Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along with
-# editalign; if not, write to the Free Software Foundation, Inc., 51 Franklin
-# St, Fifth Floor, Boston, MA 02110-1301 USA
-
+require 'rubygems'
 
 require "pathname"
 require "rjb"
@@ -28,13 +11,13 @@ rescue LoadError
 end
 require "yaml"
 
-require "java_object.rb"
-
 # Wrapper for the {Stanford Natural Language
 # Parser}[http://nlp.stanford.edu/downloads/lex-parser.shtml].
 module StanfordParser
 
-  VERSION = "2.2.0"
+  require "stanfordparser/java_object"
+
+  VERSION = "2.2.1"
 
   # The default sentence segmenter and tokenizer.  This is an English-language
   # tokenizer with support for Penn Treebank markup.
@@ -62,7 +45,7 @@ module StanfordParser
   # This function returns the path of the parser installation root.
   def StanfordParser.initialize_on_load
     if RUBY_PLATFORM =~ /(win|w)32$/
-      root = Pathname.new("C:\\stanford-parser\\current")
+      root = Pathname.new("C:\\stanford-parser\\current ")
       config = Pathname.new("C:\\stanford-parser\\ruby-stanford-parser.yaml")
     else
       root = Pathname.new("/usr/local/stanford-parser/current")

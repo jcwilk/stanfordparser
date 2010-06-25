@@ -36,7 +36,7 @@
 # sentence::
 #    A sentence to parse.  This must appear after all the options and be quoted.
 
-
+require 'rubygems'
 require "stanfordparser"
 
 # The last argument is the sentence.  The rest of the command line is passed
