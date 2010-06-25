@@ -1,5 +1,9 @@
 --- 
 dependencies: 
+  ZenTest: 
+    group: 
+    - :default
+    version: ">= 0"
   rake: 
     group: 
     - :default
@@ -23,6 +27,8 @@ dependencies:
 specs: 
 - rake: 
     version: 0.8.7
+- ZenTest: 
+    version: 4.3.3
 - json_pure: 
     version: 1.4.3
 - gemcutter: 
@@ -39,7 +45,7 @@ specs:
     version: 1.3.0
 - treebank: 
     version: 3.0.0
-hash: 264a823adfd7bb2231dd1037e95b74038b67283d
+hash: eb1d44c5fe566a3b7f0eea6790ce7f96a284ba7f
 sources: 
 - Rubygems: 
     uri: http://gemcutter.org
