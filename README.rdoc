@@ -1,18 +1,8 @@
-= stanfordparser
+= stanfordparser - experimental
 
-This is an upload/extension of Bill McNeal's stanfordparser rubyforge gem, check it out at its homepage (seems to be partially in French)
+This is the experimental branch where I'm basically playing around with speccing some example code to see what the gem is capable of. It's recommended -not- to use this branch as your gem, but you are highly encouraged to fork this branch and add in some mucking around code of your own or make my mucking code less kludgy/functional :) I'll try to integrate all pull requests I get, assuming they're specced.
 
-http://rubyforge.org/projects/stanfordparser/
-
-or its rdocs
-
-http://stanfordparser.rubyforge.org/
-
-I've been having issues trying to use this gem so I decided to upload it to github and try to organize it to be a little more gem-friendly, especially using jeweler.
-
-AFAIK there aren't other copies of this on github, please correct me if I'm mistaken. The only similar one I can see is http://github.com/tiendung/ruby-nlp which has much less code and I can only assume to be something else.
-
-See README.orig for Bill's readme, which includes dependencies, installation, and usage.
+Please see the master branch for a README more general to the project as a whole.
 
 == Branches
 
