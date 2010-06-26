@@ -5,8 +5,8 @@ require 'spec'
 require 'spec/autorun'
 require 'examples/connection_finder.rb'
 
-PARSER = StanfordParser::LexicalizedParser.new(StanfordParser::ENGLISH_PCFG_MODEL, [])
+$parser = StanfordParser::LexicalizedParser.new #(StanfordParser::ENGLISH_PCFG_MODEL, [])
 
 Spec::Runner.configure do |config|
-  
+
 end

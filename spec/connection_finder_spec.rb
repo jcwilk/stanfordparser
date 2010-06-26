@@ -2,13 +2,13 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe ConnectionFinder do
   before(:all) do
-    #@parser = StanfordParser::LexicalizedParser.new(StanfordParser::ENGLISH_PCFG_MODEL, [])
-    @parser = PARSER
-    @filename = File.dirname(__FILE__)+'/files/gpl-2.0.txt'
+    @filename = File.dirname(__FILE__)+'/files/gpl-2.0-simple.txt'
     @empty_filename = File.dirname(__FILE__)+'/files/empty_file.txt'
+    @finder = ConnectionFinder.new(@filename)
+    @finder.cached_parser = $parser
   end
 
-  describe "initialization" do
+  describe "initialization:" do
     it "takes in a filename" do
       lambda{ConnectionFinder.new(@filename)}.should_not raise_error
     end
@@ -22,41 +22,48 @@ describe ConnectionFinder do
     end
   end
 
-  describe "finding a connection" do
+  describe "finding a connection:" do
     before(:each) do
-      @noun1 = "software"
-      @noun2 = "freedom"
+      @noun1 = "rights"
+      @noun2 = "restrictions"
     end
 
-    describe "first" do
-      describe "empty file" do
+    describe "first:" do
+      describe "empty file:" do
         it "returns nil if it finds nothing" do
           empty_finder = ConnectionFinder.new(@empty_filename)
           empty_finder.stub!(:parser).and_return(@parser)
-          empty_finder.first(@noun1,@noun2).should be_nil
+          empty_finder.first("anything","whatever").should be_nil
         end
       end
 
-      describe "not empty" do
-        before(:each) do
-          @finder = ConnectionFinder.new(@filename)
-          @finder.stub!(:parser).and_return(@parser)
-          @result = @finder.first(@noun1,@noun2)
-        end
-
-        it "returns a result hash if it finds something" do
-          @result.should_not be_nil
-        end
-
-        it "finds the first sentence using both nouns" do
-          @result[:sentence].should ==
+      describe "non empty file:" do
+        it "freedom software" do
+          result = @finder.first("freedom","software")
+          result.should_not be_nil
+          result[:sentence].should ==
             "The licenses for most software are designed to take away your freedom to share and change it."
+        end
+
+        it "restrictions rights" do
+          result = @finder.first("restrictions","rights")
+          result.should_not be_nil
+          result[:sentence].should ==
+            "To protect your rights, we need to make restrictions that forbid anyone to deny you these rights or to ask you to surrender the rights."
         end
       end
     end
+  end
 
-    describe "all" do
-      it "finds all connections between nouns"
+  describe ConnectionFinder::ParsedTree do
+    before(:all) do
+      @sentence = "Few people know, though many assume, "+
+                         "that a sentence is better than a phrase."
+      @tree = @finder.send(:parse, @sentence)
+    end
+
+    it "reduces back to its original form" do
+      @tree.to_s.should == @sentence
     end
   end
 end
