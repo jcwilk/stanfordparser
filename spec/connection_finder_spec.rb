@@ -62,7 +62,12 @@ describe ConnectionFinder do
       @tree = @finder.send(:parse, @sentence)
     end
 
+    it "has a tree object" do
+      @tree.tree.class.to_s.should == 'StanfordParser::Tree'
+    end
+
     it "reduces back to its original form" do
+      debugger
       @tree.to_s.should == @sentence
     end
   end
