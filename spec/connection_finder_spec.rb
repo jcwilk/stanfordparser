@@ -67,8 +67,30 @@ describe ConnectionFinder do
     end
 
     it "reduces back to its original form" do
-      debugger
       @tree.to_s.should == @sentence
+    end
+
+    describe "prune_for:" do
+      it "returns a new ParsedTree" do
+        tree = @tree.prune_for %w(sentence phrase)
+        tree.object_id.should_not == @tree.object_id
+        tree.class.should == ConnectionFinder::ParsedTree
+      end
+
+      it "finds the smallest chunk of the sentence that links all items" do
+        tree = @tree.prune_for %w(sentence phrase)
+        tree.to_s.should == "a sentence is better than a phrase"
+      end
+    end
+  end
+
+  describe ConnectionFinder::TreeFilter do
+    it "implements Filter" #TODO: how the F do I test this?
+    
+    it "returns true when it passes and false when it fails" do
+      tf = ConnectionFinder::TreeFilter.new{|item| item == "blah!"}
+      tf.accept("blah!").should == true
+      tf.accept("blah?").should == false
     end
   end
 end

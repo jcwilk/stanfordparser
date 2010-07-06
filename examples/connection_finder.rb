@@ -42,12 +42,51 @@ class ConnectionFinder
       self.tree = _tree
     end
 
-    def prune(targets)
-      #joinNode
+    def prune_for(targets)
+      target_nodes = all_nodes.select{|n| targets.include?(n.value)}.map{|n| n.java_object}
+      raise ArgumentError, "Wrong number of targets found, need 2." if target_nodes.size != 2
+      return self.class.new(tree.joinNode(*target_nodes))
     end
 
     def to_s
+      objects = tree.to_a.select{|n| n.isLeaf }.map{|n| n.value}
+      objects.inject(''){ |sent, obj|
+        #only add a space before it if it doesn't start with a comma, period, etc
+        sent + (obj =~ /^[A-Za-z"'\(\[\{]/ ? " #{obj}" : obj)
+      }.strip
+    end
 
+    #TODO: Find a better way of doing this
+    #This is sort of a quick ugly hack, but basically it's purpose is to grab a list
+    #of all of the nodes in the tree -by reference-. If you do getLeaves() or to_a instead
+    #of children(), it'll give you all the leaves but they aren't the same reference
+    #and when you try to do something like joinNode() later it won't work. This is the
+    #simplest way I've found so far to get access to all of the nodes by reference.
+    #Note that you still have to do map{|node| node.java_object} eventually.
+    def all_nodes
+      @_all_nodes ||= begin
+        pending = [self.tree]
+        done = []
+        pending.each do |n|
+          n.children.each{|c| pending.push c }
+          done.push n
+        end
+        done
+      end
+    end
+  end
+
+  #This is something I was trying to get to work as a edu.stanford.nlp.util.Filter
+  #Have yet to get it to work, though...
+  class TreeFilter
+    attr_accessor :checker
+
+    def initialize(&block)
+      self.checker = Proc.new{|node| yield(node)}
+    end
+
+    def accept(node)
+      checker.call(node) ? true : false
     end
   end
 end

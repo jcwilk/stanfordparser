@@ -1,6 +1,12 @@
 = stanfordparser - experimental
 
-This is the experimental branch where I'm basically playing around with speccing some example code to see what the gem is capable of. It's recommended -not- to use this branch as your gem, but you are highly encouraged to fork this branch and add in some mucking around code of your own or make my mucking code less kludgy/functional :) I'll try to integrate all pull requests I get, assuming they're specced.
+This is the experimental branch where I'm basically playing around with speccing some example code to see
+what the gem is capable of. It's recommended -not- to use this branch as your gem, but you are highly
+encouraged to fork this branch and add in some mucking around code of your own or make my mucking code less
+kludgy/functional :) I'll try to integrate all pull requests I get, assuming they're specced.
+
+=== Points of Interest:
+* Check out ConnectionFinder#prune_for and it's associated specs, very basic so far but lots of potential.
 
 Please see the master branch for a README more general to the project as a whole.
 
