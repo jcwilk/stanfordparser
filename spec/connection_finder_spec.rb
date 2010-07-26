@@ -71,6 +71,9 @@ describe ConnectionFinder do
     end
 
     describe "prune_for:" do
+      it "uses a dependency tree to find an array of nodes to use"
+      it "supports an arbitrary number of words as input"
+
       it "returns a new ParsedTree" do
         tree = @tree.prune_for %w(sentence phrase)
         tree.object_id.should_not == @tree.object_id
@@ -82,6 +85,14 @@ describe ConnectionFinder do
         tree.to_s.should == "a sentence is better than a phrase"
       end
     end
+  end
+
+  describe ConnectionFinder::DependencyTree do
+    it 'has an array of dependencies'
+
+    it 'can return the dependencies in the form of a tree'
+
+    it 'returns the shortest path between two dependencies'
   end
 
   describe ConnectionFinder::TreeFilter do
