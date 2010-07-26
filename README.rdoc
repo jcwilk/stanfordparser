@@ -16,9 +16,9 @@ See README.orig for Bill's readme, which includes dependencies, installation, an
 
 == Branches
 
-master - Jeweler and Bundler integrated along with slight reorganization of files to be more gem-standard. This is the branch you should use if you want to source the gem straight from github. I will leave this branch alone for the most part unless I find/come up with stable and useful additions. All changes will be backwards compatible.
-stock - Almost untouched from Bill's version, except for the README. Use this branch if that's what you're looking for.
-experimental - I'll be putting in some code as examples and testing out some ideas. Do not use this branch as a gem. You are very encouraged, however, to fork it and add some code/make my code better. I'll try to integrate all the pull requests I get, if not in that branch into another. 
+* master - Jeweler and Bundler integrated along with slight reorganization of files to be more gem-standard. This is the branch you should use if you want to source the gem straight from github. I will leave this branch alone for the most part unless I find/come up with stable and useful additions. All changes will be backwards compatible.
+* stock - Almost untouched from Bill's version, except for the README. Use this branch if that's what you're looking for.
+* experimental - I'll be putting in some code as examples and testing out some ideas. Do not use this branch as a gem. You are very encouraged, however, to fork it and add some code/make my code better. I'll try to integrate all the pull requests I get, if not in that branch into another. 
 
 == Note on Patches/Pull Requests
  
