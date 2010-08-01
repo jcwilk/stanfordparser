@@ -4,6 +4,7 @@ require 'stanfordparser'
 require 'spec'
 require 'spec/autorun'
 require 'examples/connection_finder.rb'
+require 'ruby-debug'
 
 $parser = StanfordParser::LexicalizedParser.new #(StanfordParser::ENGLISH_PCFG_MODEL, [])
 

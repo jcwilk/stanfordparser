@@ -59,7 +59,7 @@ describe ConnectionFinder do
     before(:all) do
       @sentence = "Few people know, though many assume, "+
                          "that a sentence is better than a phrase."
-      @tree = @finder.send(:parse, @sentence)
+      @tree = @finder.send(:parsed_tree, @sentence)
     end
 
     it "has a tree object" do
@@ -87,12 +87,35 @@ describe ConnectionFinder do
     end
   end
 
-  describe ConnectionFinder::DependencyTree do
-    it 'has an array of dependencies'
+  describe 'ConnectionFinder::DependencyTree' do
+    before(:each) do
+      @sentence = "Few people know, though many assume, "+
+                         "that a sentence is better than a phrase."
+    end
 
-    it 'can return the dependencies in the form of a tree'
+    describe "initialization:" do
+      it 'percolates the heads before pulling the dependencies' do
+        java_tree = @finder.send(:parsed_java_obj, @sentence)
+        #TODO: see Tree#dependencies and SemanticHeadFinder in the javadocs
+        java_tree.should get_its_heads_percolated
+        java_tree.should_receive(:dependencies)
+        @finder.send(:dependency_tree, @sentence)
+      end
+    end
 
-    it 'returns the shortest path between two dependencies'
+    describe "instance stuff:" do
+      before(:each) do
+        @tree = @finder.send(:dependency_tree, @sentence)
+      end
+
+      it 'has a set of dependencies' do
+        @tree.dependencies.class.to_s.should == 'Set'
+      end
+
+      it 'can return the dependencies in the form of a tree'
+
+      it 'returns the shortest path between two dependencies'
+    end
   end
 
   describe ConnectionFinder::TreeFilter do

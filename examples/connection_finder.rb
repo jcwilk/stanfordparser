@@ -27,19 +27,38 @@ class ConnectionFinder
 
   private
 
-  def parse(string)
-    ParsedTree.new(parser.apply(string))
+  def parsed_java_obj(string)
+    @_parsed_hash ||= {}
+    @_parsed_hash[string] ||= parser.apply(string)
+  end
+
+  def parsed_tree(string)
+    ParsedTree.new(parsed_java_obj(string))
+  end
+
+  def dependency_tree(string)
+    DependencyTree.new(parsed_java_obj(string))
   end
 
   def parser
     self.cached_parser ||= StanfordParser::LexicalizedParser.new(StanfordParser::ENGLISH_PCFG_MODEL, []) 
   end
 
+  class DependencyTree
+    attr_accessor :dependencies
+    attr_accessor :tree
+
+    def initialize(java_tree)
+      self.tree = java_tree
+      self.dependencies = java_tree.dependencies
+    end
+  end
+
   class ParsedTree
     attr_accessor :tree
 
-    def initialize(_tree)
-      self.tree = _tree
+    def initialize(java_tree)
+      self.tree = java_tree
     end
 
     def prune_for(targets)
