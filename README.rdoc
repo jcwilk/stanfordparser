@@ -12,12 +12,15 @@ I've been having issues trying to use this gem so I decided to upload it to gith
 
 AFAIK there aren't other copies of this on github, please correct me if I'm mistaken. The only similar one I can see is http://github.com/tiendung/ruby-nlp which has much less code and I can only assume to be something else.
 
-See README.orig for Bill's readme, which includes dependencies, installation, and usage.
+It seems like using version 1.6.1 of the java StanfordParser package is your best bet for compatability.
+
+See README.orig.rdoc for Bill's readme, which includes dependencies, installation, and usage.
 
 == Branches
 
 * master - Jeweler and Bundler integrated along with slight reorganization of files to be more gem-standard. This is the branch you should use if you want to source the gem straight from github. I will leave this branch alone for the most part unless I find/come up with stable and useful additions. All changes will be backwards compatible.
 * stock - Almost untouched from Bill's version, except for the README. Use this branch if that's what you're looking for.
+* fixing_tests - The tests are currently broken, this branch is trying to address that. Once the tests are fixed it will be merged back into master. Help appreciated! I'll keep a TESTS_STATUS.rdoc keeping track of progress.
 * experimental - I'll be putting in some code as examples and testing out some ideas. Do not use this branch as a gem. You are very encouraged, however, to fork it and add some code/make my code better. I'll try to integrate all the pull requests I get, if not in that branch into another. 
 
 == Note on Patches/Pull Requests
