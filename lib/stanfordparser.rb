@@ -283,12 +283,9 @@ module StanfordParser
     # object returned by the preprocessor.
     def initialize(stanford_parser_sentence)
       # Convert FeatureStructure wrappers to StandoffToken objects.
-      s = stanford_parser_sentence.to_a.collect do |fsJava|
-			fs = convertFeatureStuctureToRuby(fsJava)
-        current = fs['current']
-        word = fs['word']
-        before = fs['before']
-        after = fs['after']
+      s = stanford_parser_sentence.to_a.collect do |fs_java|
+  			fs = convert_feature_stucture_to_ruby(fs_java)
+        current,word,before,after = fs.values_at(:word,:current,:begin,:end,:before,:after)
         # The to_s.to_i is necessary because the get function returns
         # java.lang.Integer objects instead of Ruby integers.
         begin_position = fs['begin'].to_s.to_i
@@ -309,18 +306,15 @@ module StanfordParser
     end
 
 		# parse a java string to a hash
-		def convertFeatureStuctureToRuby(fs)
-			annotatedWord = {}
+		def convert_feature_stucture_to_ruby(fs)
+			annotated_words = {}
 			elements = fs.to_s.split
-			annotatedWord.store('word',elements[0].split('=')[1] ? elements[0].split('=')[1] : "")
-			annotatedWord.store('current',elements[1].split('=')[1] ? elements[1].split('=')[1] : "")
-			annotatedWord.store('begin',elements[2].split('=')[1] ? elements[2].split('=')[1] : "")
-			annotatedWord.store('end',elements[3].split('=')[1] ? elements[3].split('=')[1] : "")
-			annotatedWord.store('before',elements[4].split('=')[1] ? elements[4].split('=')[1] : "")
-			annotatedWord.store('after',elements[5].split('=')[1] ? elements[5].split('=')[1] : "")
-			annotatedWord
+      [:word,:current,:begin,:end,:before,:after].each_with_index do |key, index|
+        annotated_words[key] = elements[index].split('=')[1] if elements[index]
+        annotated_words[key] ||= ''
+      end
+      annotated_words
 		end
-
   end
 
 
