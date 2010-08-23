@@ -264,6 +264,7 @@ module StanfordParser
       # See the documentation for
       # <tt>edu.stanford.nlp.process.DocumentPreprocessor</tt> for a
       # description of these parameters.
+#			ptb_tokenizer_factory = ptb_tokenizer_class.factory(false, true)
       ptb_tokenizer_factory = ptb_tokenizer_class.factory(false, true, false)
       super(ptb_tokenizer_factory)
     end
@@ -282,17 +283,17 @@ module StanfordParser
     # object returned by the preprocessor.
     def initialize(stanford_parser_sentence)
       # Convert FeatureStructure wrappers to StandoffToken objects.
-      s = stanford_parser_sentence.to_a.collect do |fs|
-        current = fs.current
-        word = fs.word
-        before = fs.before
-        after = fs.after
+      s = stanford_parser_sentence.to_a.collect do |fsJava|
+			fs = convertFeatureStuctureToRuby(fsJava)
+        current = fs['current']
+        word = fs['word']
+        before = fs['before']
+        after = fs['after']
         # The to_s.to_i is necessary because the get function returns
         # java.lang.Integer objects instead of Ruby integers.
-        begin_position = fs.get(fs.BEGIN_POSITION_KEY).to_s.to_i
-        end_position = fs.get(fs.END_POSITION_KEY).to_s.to_i
-        StandoffToken.new(current, word, before, after,
-                          begin_position, end_position)
+        begin_position = fs['begin'].to_s.to_i
+        end_position = fs['end'].to_s.to_i
+        StandoffToken.new(current, word, before, after,begin_position, end_position)
       end
       super(s)
     end
@@ -306,6 +307,20 @@ module StanfordParser
     def inspect
       to_s
     end
+
+		# parse a java string to a hash
+		def convertFeatureStuctureToRuby(fs)
+			annotatedWord = {}
+			elements = fs.to_s.split
+			annotatedWord.store('word',elements[0].split('=')[1] ? elements[0].split('=')[1] : "")
+			annotatedWord.store('current',elements[1].split('=')[1] ? elements[1].split('=')[1] : "")
+			annotatedWord.store('begin',elements[2].split('=')[1] ? elements[2].split('=')[1] : "")
+			annotatedWord.store('end',elements[3].split('=')[1] ? elements[3].split('=')[1] : "")
+			annotatedWord.store('before',elements[4].split('=')[1] ? elements[4].split('=')[1] : "")
+			annotatedWord.store('after',elements[5].split('=')[1] ? elements[5].split('=')[1] : "")
+			annotatedWord
+		end
+
   end
 
 
