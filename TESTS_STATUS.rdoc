@@ -1,2 +1,34 @@
 = Status of Tests
-* Please see fixing_tests branches for efforts towards this goal.
+Run with bundle exec rake test
+
+The current test results I'm getting are the following:
+
+  Finished in 4.514778 seconds.
+  
+  1) Failure:
+  test_get_sentences_from_string(DocumentPreprocessorTestCase) [./test/test_stanfordparser.rb:108]:
+  <"Thisisasentence."> expected but was
+  <"This is a sentence .">.
+  
+  2) Failure:
+  test_standoff_document_preprocessor(DocumentPreprocessorTestCase) [./test/test_stanfordparser.rb:123]:
+  <"He (John) is tall."> expected but was
+  <"He2-LRB-4John8-RRB-9is12tall17.">.
+  
+  3) Error:
+  test_feature_label(FeatureLabelTestCase):
+  NoClassDefFoundError: edu/stanford/nlp/ling/FeatureLabel
+  ./lib/stanfordparser/java_object.rb:40:in `import'
+  ./lib/stanfordparser/java_object.rb:40:in `initialize'
+  ./lib/stanfordparser.rb:197:in `initialize'
+  ./test/test_stanfordparser.rb:85:in `new'
+  ./test/test_stanfordparser.rb:85:in `test_feature_label'
+  
+  4) Failure:
+  test_parse_text_default_nodetype(StandoffParsedTextTestCase)
+  [./test/test_stanfordparser.rb:183:in `verify_parsed_text'
+  ./test/test_stanfordparser.rb:172:in `test_parse_text_default_nodetype']:
+  <[0, 2]> expected but was
+  <[0, 0]>.
+  
+  13 tests, 24 assertions, 3 failures, 1 errors
