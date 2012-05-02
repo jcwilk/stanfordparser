@@ -14,24 +14,18 @@ Gem::Specification.new do |s|
   s.email = %q{jcwilk@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
-     "README.orig",
      "README.rdoc"
   ]
   s.files = [
     ".document",
      ".gitignore",
      "LICENSE",
-     "README.orig",
      "README.rdoc",
      "Rakefile",
      "VERSION.yml",
-     "examples/connection_finder.rb",
      "examples/stanford-sentence-parser.rb",
      "lib/stanfordparser.rb",
      "lib/stanfordparser/java_object.rb",
-     "spec/spec.opts",
-     "spec/spec_helper.rb",
-     "spec/stanfordparser_spec.rb",
      "test/test_stanfordparser.rb"
   ]
   s.homepage = %q{http://github.com/jcwilk/stanfordparser}
@@ -40,10 +34,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{GitHub upload/extension of Bill McNeal's stanfordparser rubygem}
   s.test_files = [
-    "spec/spec_helper.rb",
-     "spec/stanfordparser_spec.rb",
      "test/test_stanfordparser.rb",
-     "examples/connection_finder.rb",
      "examples/stanford-sentence-parser.rb"
   ]
 
